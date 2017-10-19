@@ -58,23 +58,23 @@ class CnautonewsSpiderMiddleware(object):
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
-class PhantomJSMiddleware(object):
-    @classmethod
-    def process_request(cls, request, spider):
+# class PhantomJSMiddleware(object):
+#     @classmethod
+#     def process_request(cls, request, spider):
 
-        if request.meta.has_key('PhantomJS'):
-            dcap = dict(DesiredCapabilities.PHANTOMJS)
-            dcap["phantomjs.page.settings.userAgent"] = (
-            "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36"
-            )
+#         if request.meta.has_key('PhantomJS'):
+#             dcap = dict(DesiredCapabilities.PHANTOMJS)
+#             dcap["phantomjs.page.settings.userAgent"] = (
+#             "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36"
+#             )
 
-            driver = webdriver.PhantomJS(executable_path="D:\\work-path\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe",
-                        desired_capabilities=dcap
-                            )
-            driver.get(request.url)
-            content = driver.page_source.encode('utf-8')
-            driver.quit()  
-            return http.HtmlResponse(request.url, encoding='utf-8', body=content, request=request)
+#             driver = webdriver.PhantomJS(executable_path="D:\\work-path\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe",
+#                         desired_capabilities=dcap
+#                             )
+#             driver.get(request.url)
+#             content = driver.page_source.encode('utf-8')
+#             driver.quit()  
+#             return http.HtmlResponse(request.url, encoding='utf-8', body=content, request=request)
 
 # class MyproxiesSpiderMiddleware(object):  
   

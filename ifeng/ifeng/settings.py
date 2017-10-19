@@ -14,8 +14,8 @@ BOT_NAME = 'ifeng'
 SPIDER_MODULES = ['ifeng.spiders']
 NEWSPIDER_MODULE = 'ifeng.spiders'
 
-# MONGO_URI = "mongodb://192.168.4.13:10040/"  # 主机IP
-MONGO_URI = "mongodb://127.0.0.1:27017/" 
+MONGO_URI = "mongodb://192.168.4.13:10040/"  # 主机IP
+# MONGO_URI = "mongodb://127.0.0.1:27017/" 
 MONGO_DATABASE = "gjzdb"  # 库名 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -69,8 +69,15 @@ DEFAULT_REQUEST_HEADERS = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'ifeng.pipelines.IfengPipeline': 300,
+    'ifeng.pipelines.IfengPipeline': 300,
+    'ifeng.pipelines.PicDownPlpeline': 1,
 }
+
+IMAGES_STORE = 'D:/ways/ifeng_pic/'
+FTP_USER = 'dssnews'
+FTP_PASSWORD = 'dssnews2017'
+FTP_HOST = '192.168.1.29'
+FTP_DIR = 'ifeng_pic/'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

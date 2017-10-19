@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import scrapy, re, hashlib, html
+import scrapy, re, hashlib, html, datetime
 from scrapy.selector import Selector
 from news163.items import News163Item
 from scrapy.conf import settings
@@ -97,6 +97,9 @@ class news163_Spider(scrapy.Spider):
 
         item = News163Item()
         sel = Selector(response)
+        now = datetime.datetime.now()
+        item['collect_date'] = now.strftime("%Y-%m-%d")
+        path_md5 = hashlib.sha1(response.url.encode(encoding="utf-8")).hexdigest()
         if response.xpath("//div[@class='post_content post_area clearfix']"):
             item['news_title'] = sel.xpath("//div[@id='epContentLeft']/h1/text()").extract_first()
             item['post_time'] = sel.xpath("//div[@id='epContentLeft']/div[@class='post_time_source']/text()").extract_first().strip()[:-4]
@@ -116,11 +119,16 @@ class news163_Spider(scrapy.Spider):
                 item['author'] = ''
             item['pic'] = sel.xpath("//div[@id='endText']//img/@src").extract()
             item['keywords'] = ''
-            item['text'] = text
+            if text:
+                item['text'] = text
+                item['text_sta'] = cutword(text)
+            else:
+                item['text'] = ''
+                item['text_sta'] = ''
             item['subhead'] = ''
             text_body = sel.xpath("//div[@id='endText']").extract_first()
             html_body = html.unescape(text_body)
-            path_md5 = hashlib.sha1(response.url.encode(encoding="utf-8")).hexdigest()
+            
             pic = []
             for url in item['pic']:
                 image_guid = hashlib.sha1(url.encode(encoding="utf-8")).hexdigest()
@@ -163,11 +171,16 @@ class news163_Spider(scrapy.Spider):
                 n.replace(u'\xa0', '')
                 text += n
             text.replace(u'\xa0', '')
-            item['text'] = text
+            if text:
+                item['text'] = text
+                item['text_sta'] = cutword(text)
+            else:
+                item['text'] = ''
+                item['text_sta'] = ''
             item['subhead'] = ''
             text_body = sel.xpath("//div[@id='endText']").extract_first()
             html_body = html.unescape(text_body)
-            path_md5 = hashlib.sha1(response.url.encode(encoding="utf-8")).hexdigest()
+            
             pic = []
             for url in item['pic']:
                 image_guid = hashlib.sha1(url.encode(encoding="utf-8")).hexdigest()
@@ -204,16 +217,23 @@ class news163_Spider(scrapy.Spider):
             item['author'] = ''
             item['pic'] = sel.xpath("//div[@id='endText']/p/img/@src").extract()
             item['keywords'] = ''
+
             text = ''
             for n in sel.xpath("//div[@id='endText']/p//text()").extract():
                 n.replace(u'\xa0', '')
                 text += n
             text.replace(u'\xa0', '')
-            item['text'] = text
+            if text:
+                item['text'] = text
+                item['text_sta'] = cutword(text)
+            else:
+                item['text'] = ''
+                item['text_sta'] = ''
+
             item['subhead']  = ''
             text_body = sel.xpath("//div[@id='endText']").extract_first()
             html_body = html.unescape(text_body)
-            path_md5 = hashlib.sha1(response.url.encode(encoding="utf-8")).hexdigest()
+            
             pic = []
             for url in item['pic']:
                 image_guid = hashlib.sha1(url.encode(encoding="utf-8")).hexdigest()
